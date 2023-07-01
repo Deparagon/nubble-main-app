@@ -1,0 +1,24 @@
+# fly.toml app configuration file generated for nubble-main-app on 2023-06-12T16:41:22+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+
+
+
+app = "nubble-main-app"
+primary_region = "atl"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+
+
+[env]
+  PORT = "8080"
+  HOST = "https://nubble-main-app.fly.dev"
+  SHOPIFY_API_KEY="82cfbbdb1b1d301dcd9cd0b566cf4049"
+  SCOPES="read_products, write_products, read_product_listings, read_orders, write_orders"
+  #

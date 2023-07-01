@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Card, Divider, TextContainer, Form, Text, FormLayout, TextField, Button } from "@shopify/polaris";
 import { Toast } from "@shopify/app-bridge-react";
 import { useTranslation } from "react-i18next";
@@ -8,7 +7,7 @@ import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 
   export function KeyManager() {
   const [mngKey, setMngKey] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const fetch = useAuthenticatedFetch();
   const emptyToastProps = { content: null };
   const [toastProps, setToastProps] = useState(emptyToastProps);
@@ -20,7 +19,7 @@ import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 
 
 
-    const {
+  const {
     data
   } = useAppQuery({
     url: "/api/keys/shopkey",
@@ -37,7 +36,12 @@ import { useAppQuery, useAuthenticatedFetch } from "../hooks";
     },
   });
 
-   
+setTimeout(function(){
+        if(data){
+           setMngKey(data.mngKey);
+        }
+}, 3500);
+
 const toastMarkup = toastProps.content && (
     <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
   );
@@ -51,7 +55,7 @@ const toastMarkup = toastProps.content && (
                console.log(response.json());
 
       setToastProps({
-        content: "successful key set",
+        content: "successfully saved mngKey",
       });
     } else {
       setIsLoading(false);
@@ -76,10 +80,11 @@ const toastMarkup = toastProps.content && (
         <TextField onChange={enterKeyValue} autoComplete="off" name="mngKey" type="text" value={mngKey} />
          
           <Text variant="headingXs" as="h6" style="padding:20px;">
-            Use the button below to save your mngKey (API Key);
+            Use the button below to save your mngKey (API Key)
           </Text>
-         <Divider borderColor="transparent" />
-        <Button size="large"  loading={isLoading} primary="true" textAlign="center" onClick={saveKey}> Save Key </Button>
+           <br/>  <br/>
+         <Divider style={{ padding: "20px 20px" }} borderColor="transparent" />
+        <Button style={{ marginTop: "20px" }} size="large"  loading={isLoading} primary="true" textAlign="center" onClick={saveKey}> Save Key </Button>
         
       </form>
     </Card>

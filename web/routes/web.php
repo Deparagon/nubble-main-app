@@ -154,7 +154,7 @@ Route::get('/api/keys/shopkey', function (Request $request) {
 
     $shopkey = KeyManager::fetchShopKey($session);
 
-    $result =array('MngKey'=>$shopkey);
+    $result =array('mngKey'=>$shopkey);
     return response(json_encode($result));
 })->middleware('shopify.auth');
 
@@ -164,14 +164,13 @@ Route::get('/api/keys/save', function (Request $request) {
     /** @var AuthSession */
     $session = $request->get('shopifySession'); // Provided by the shopify.auth middleware, guaranteed to be active
 
-    $MngKey = htmlentities($request->MngKey);
+    $mngKey = htmlentities($request->mngKey);
 
-    file_put_contents(dirname(__FILE__).'/requestdata.txt', print_r($request->MngKey, true));
-    if ($MngKey =='') {
-        return response()->json(array('status'=>'NK', 'message'=>'Invalid MngKey, MngKey is required'));
+    if ($mngKey =='') {
+        return response()->json(array('status'=>'NK', 'message'=>'Invalid mngKey, mngKey is required'));
     }
 
-    KeyManager::saveAPIKey($session, $MngKey);
+    KeyManager::saveAPIKey($session, $mngKey);
 
     return response()->json(array('status'=>'OK', 'message'=>'Key saved successfully'));
 

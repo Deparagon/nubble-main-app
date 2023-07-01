@@ -14,7 +14,7 @@ class KeyManager
     public static function fetchShopKey(Session $session)
     {
         $shop = \App\Models\Session::where('shop', $session->getShop())->first();
-        return $shop->MngKey;
+        return $shop->mngKey;
     }
 
 
@@ -44,7 +44,7 @@ class KeyManager
             $headers[] = 'Accept:application/json';
         }
 
-        $url = 'http://dev.lightcodes.net/shopify/api.php';
+        //$url = 'http://dev.lightcodes.net/shopify/api.php';
 
 
         if ($url =='') {
