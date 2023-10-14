@@ -5,6 +5,7 @@
 /web/storage/db.sqlite
 /web/vendor
 /web/composer.lock
+/web/environment.txt
 .env
 .env.*
 !.env.example
