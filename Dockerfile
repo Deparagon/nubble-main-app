@@ -1,7 +1,7 @@
 FROM php:8.1-fpm-alpine
 
 ARG SHOPIFY_API_KEY
-ENV SHOPIFY_API_KEY=82cfbbdb1b1d301dcd9cd0b566cf4049
+ENV SHOPIFY_API_KEY=3e9fe2349614d6d5dc9f601be71fed8a
 
 RUN apk update && apk add --update nodejs npm \
     composer php-pdo_sqlite php-pdo_mysql php-pdo_pgsql php-simplexml php-fileinfo php-dom php-tokenizer php-xml php-xmlwriter php-session \
@@ -19,10 +19,13 @@ COPY web/nginx.conf /etc/nginx/nginx.conf
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 RUN composer install
-RUN touch /app/storage/db.sqlite
+RUN touch /app/storage/nubble.sqlite
 RUN chown www-data:www-data /app/storage/db.sqlite
 
 RUN cd frontend && npm install && npm run build
 RUN composer build
 
-ENTRYPOINT [ "/app/entrypoint.sh" ]
+RUN dos2unix /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+ENTRYPOINT ["/app/entrypoint.sh"]

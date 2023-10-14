@@ -19,6 +19,6 @@ primary_region = "atl"
 [env]
   PORT = "8080"
   HOST = "https://nubble-main-app.fly.dev"
-  SHOPIFY_API_KEY="82cfbbdb1b1d301dcd9cd0b566cf4049"
+  SHOPIFY_API_KEY="3e9fe2349614d6d5dc9f601be71fed8a"
   SCOPES="read_products, write_products, read_product_listings, read_orders, write_orders"
   #
