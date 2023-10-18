@@ -91,10 +91,10 @@ Route::get('/api/auth/callback', function (Request $request) {
 
     $response = Registry::register('/api/webhooks', Topics::ORDERS_UPDATE, $shop, $session->getAccessToken());
     if ($response->isSuccess()) {
-        Log::debug("Registered ORDERS_UPDATE webhook for shop $shop");
+        Log::debug("Registered ORDERS_UPDATED webhook for shop $shop");
     } else {
         Log::error(
-            "Failed to register ORDERS_UPDATE webhook for shop $shop with response body: " .
+            "Failed to register ORDERS_UPDATED webhook for shop $shop with response body: " .
                 print_r($response->getBody(), true)
         );
     }
@@ -112,7 +112,7 @@ Route::get('/api/auth/callback', function (Request $request) {
 
 
 
-    $response = Registry::register('/api/webhooks', Topics::PRODUCT_UPDATE, $shop, $session->getAccessToken());
+    $response = Registry::register('/api/webhooks', Topics::PRODUCT_UPDATED, $shop, $session->getAccessToken());
     if ($response->isSuccess()) {
         Log::debug("Registered PRODUCT_UPDATE webhook for shop $shop");
     } else {
