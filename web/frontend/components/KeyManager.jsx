@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Divider, TextContainer, Form, Text, FormLayout, TextField, Button } from "@shopify/polaris";
 import { Toast } from "@shopify/app-bridge-react";
 import { useTranslation } from "react-i18next";
+import { useMutation } from 'react'
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 
 
@@ -24,8 +25,9 @@ import { useAppQuery, useAuthenticatedFetch } from "../hooks";
   } = useAppQuery({
     url: "/api/keys/shopkey",
     reactQueryOptions: {
-      onSuccess: () => {
+      onSettled: () => {
         if(data){
+                  setIsLoading(false);
                   console.log(data.mngKey);
                   setMngKey(data.mngKey);
                   setIsLoading(false);
@@ -49,6 +51,14 @@ const toastMarkup = toastProps.content && (
 
     const saveKey = async () => {
       setIsLoading(true);
+      if(mngKey ==""){
+            setIsLoading(false);
+      setToastProps({
+        content: "Your API key is required and cannot be empty",
+        error: true,
+      });
+      return;
+      }
     const response = await fetch("/api/keys/save?mngKey="+mngKey);
     if (response.ok) {
       setIsLoading(false);

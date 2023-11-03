@@ -63,8 +63,11 @@ Route::get('/api/auth/callback', function (Request $request) {
         ['App\Lib\CookieHandler', 'saveShopifyCookie'],
     );
 
+
     $host = $request->query('host');
     $shop = Utils::sanitizeShopDomain($request->query('shop'));
+
+    
 
     $response = Registry::register('/api/webhooks', Topics::APP_UNINSTALLED, $shop, $session->getAccessToken());
     if ($response->isSuccess()) {
@@ -77,30 +80,30 @@ Route::get('/api/auth/callback', function (Request $request) {
     }
 
 
-    $response = Registry::register('/api/webhooks', Topics::ORDERS_PAID, $shop, $session->getAccessToken());
-    if ($response->isSuccess()) {
-        Log::debug("Registered ORDERS_PAID webhook for shop $shop");
-    } else {
-        Log::error(
-            "Failed to register ORDERS_PAID webhook for shop $shop with response body: " .
-                print_r($response->getBody(), true)
-        );
-    }
+    // $response = Registry::register('/api/webhooks', Topics::ORDERS_PAID, $shop, $session->getAccessToken());
+    // if ($response->isSuccess()) {
+    //     Log::debug("Registered ORDERS_PAID webhook for shop $shop");
+    // } else {
+    //     Log::error(
+    //         "Failed to register ORDERS_PAID webhook for shop $shop with response body: " .
+    //             print_r($response->getBody(), true)
+    //     );
+    // }
 
 
 
-    $response = Registry::register('/api/webhooks', Topics::ORDERS_UPDATE, $shop, $session->getAccessToken());
-    if ($response->isSuccess()) {
-        Log::debug("Registered ORDERS_UPDATED webhook for shop $shop");
-    } else {
-        Log::error(
-            "Failed to register ORDERS_UPDATED webhook for shop $shop with response body: " .
-                print_r($response->getBody(), true)
-        );
-    }
+    // $response = Registry::register('/api/webhooks', Topics::ORDERS_UPDATED, $shop, $session->getAccessToken());
+    // if ($response->isSuccess()) {
+    //     Log::debug("Registered ORDERS_UPDATED webhook for shop $shop");
+    // } else {
+    //     Log::error(
+    //         "Failed to register ORDERS_UPDATED webhook for shop $shop with response body: " .
+    //             print_r($response->getBody(), true)
+    //     );
+    // }
 
 
-    $response = Registry::register('/api/webhooks', Topics::PRODUCT_DELETE, $shop, $session->getAccessToken());
+    $response = Registry::register('/api/webhooks', Topics::PRODUCTS_DELETE, $shop, $session->getAccessToken());
     if ($response->isSuccess()) {
         Log::debug("Registered PRODUCT_DELETE webhook for shop $shop");
     } else {
@@ -112,7 +115,7 @@ Route::get('/api/auth/callback', function (Request $request) {
 
 
 
-    $response = Registry::register('/api/webhooks', Topics::PRODUCT_UPDATED, $shop, $session->getAccessToken());
+    $response = Registry::register('/api/webhooks', Topics::PRODUCTS_UPDATE, $shop, $session->getAccessToken());
     if ($response->isSuccess()) {
         Log::debug("Registered PRODUCT_UPDATE webhook for shop $shop");
     } else {
@@ -161,6 +164,25 @@ Route::get('/api/keys/shopkey', function (Request $request) {
 
 
 Route::get('/api/keys/save', function (Request $request) {
+    /** @var AuthSession */
+    $session = $request->get('shopifySession'); // Provided by the shopify.auth middleware, guaranteed to be active
+
+    $mngKey = htmlentities($request->mngKey);
+
+    if ($mngKey =='') {
+        return response()->json(array('status'=>'NK', 'message'=>'Invalid mngKey, mngKey is required'));
+    }
+
+    KeyManager::saveAPIKey($session, $mngKey);
+
+    return response()->json(array('status'=>'OK', 'message'=>'Key saved successfully'));
+
+    // return response($result->getDecodedBody());
+})->middleware('shopify.auth');
+
+
+
+Route::post('/api/keys/save', function (Request $request) {
     /** @var AuthSession */
     $session = $request->get('shopifySession'); // Provided by the shopify.auth middleware, guaranteed to be active
 

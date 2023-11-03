@@ -3,6 +3,7 @@
 /web/public/storage
 /web/storage/*.key
 /web/storage/db.sqlite
+/web/storage/nubble.sqlite
 /web/vendor
 /web/composer.lock
 /web/environment.txt

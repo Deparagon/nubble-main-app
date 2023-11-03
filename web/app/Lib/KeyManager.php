@@ -14,6 +14,9 @@ class KeyManager
     public static function fetchShopKey(Session $session)
     {
         $shop = \App\Models\Session::where('shop', $session->getShop())->first();
+        if(is_null($shop->mngKey)){
+            return "";
+        }
         return $shop->mngKey;
     }
 
@@ -22,7 +25,7 @@ class KeyManager
     {
         $shop = \App\Models\Session::where('shop', $session->getShop())->first();
 
-
+       
         $shop->mngKey = $key;
 
         $shop->save();
