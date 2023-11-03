@@ -6,6 +6,7 @@
 /web/storage/nubble.sqlite
 /web/vendor
 /web/routes/*.txt
+/web/*.txt
 /web/composer.lock
 /web/environment.txt
 .env
