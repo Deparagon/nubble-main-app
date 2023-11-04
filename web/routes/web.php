@@ -37,7 +37,7 @@ use App\Lib\KeyManager;
 
 Route::fallback(function (Request $request) {
     if (Context::$IS_EMBEDDED_APP &&  $request->query("embedded", false) === "1") {
-          file_get_contents(dirname(__FILE__).'/environment.txt', print_r(env('APP_ENV'), true));
+          file_put_contents(dirname(__FILE__).'/environment.txt', print_r(env('APP_ENV'), true));
         if (env('APP_ENV') === 'production') {
             return file_get_contents(public_path('index.html'));
         } else {
