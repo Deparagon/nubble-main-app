@@ -70,7 +70,7 @@ Route::get('/api/auth/callback', function (Request $request) {
     $shop = Utils::sanitizeShopDomain($request->query('shop'));
 
     
-    file_get_contents(dirname(__FILE__).'/hereisthe_shop', print_r($host, true));
+    file_get_contents(dirname(__FILE__).'/hereisthe_shop.txt', print_r($host, true));
 
     $response = Registry::register('/api/webhooks', Topics::APP_UNINSTALLED, $shop, $session->getAccessToken());
     if ($response->isSuccess()) {
