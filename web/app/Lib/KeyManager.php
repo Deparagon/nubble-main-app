@@ -25,7 +25,6 @@ class KeyManager
     {
         $shop = \App\Models\Session::where('shop', $session->getShop())->first();
 
-       
         $shop->mngKey = $key;
 
         $shop->save();

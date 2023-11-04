@@ -9,6 +9,7 @@
 /web/*.txt
 /web/composer.lock
 /web/environment.txt
+/web/nginx.conf
 .env
 .env.*
 !.env.example
