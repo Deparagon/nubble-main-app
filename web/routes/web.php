@@ -37,13 +37,15 @@ use App\Lib\KeyManager;
 
 Route::fallback(function (Request $request) {
     if (Context::$IS_EMBEDDED_APP &&  $request->query("embedded", false) === "1") {
-         // file_put_contents(dirname(__FILE__).'/environment.txt', print_r(env('APP_ENV'), true));
+         file_put_contents(dirname(__FILE__).'/environment.txt', print_r(env('APP_ENV'), true));
         if (env('APP_ENV') === 'production') {
             return file_get_contents(public_path('index.html'));
         } else {
             return file_get_contents(base_path('frontend/index.html'));
         }
     } else {
+         file_put_contents(dirname(__FILE__).'/embedded_app.txt', print_r(Utils::getEmbeddedAppUrl($request->query("host", null)) . "/" . $request->path(), true));
+         file_put_contents(dirname(__FILE__).'/embedded_app_redirecturl.txt', print_r(env('APP_ENV'), true));
         return redirect(Utils::getEmbeddedAppUrl($request->query("host", null)) . "/" . $request->path());
     }
 })->middleware('shopify.installed');
