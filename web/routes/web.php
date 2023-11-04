@@ -37,7 +37,7 @@ use App\Lib\KeyManager;
 
 Route::fallback(function (Request $request) {
     if (Context::$IS_EMBEDDED_APP &&  $request->query("embedded", false) === "1") {
-          file_put_contents(dirname(__FILE__).'/environment.txt', print_r(env('APP_ENV'), true));
+         // file_put_contents(dirname(__FILE__).'/environment.txt', print_r(env('APP_ENV'), true));
         if (env('APP_ENV') === 'production') {
             return file_get_contents(public_path('index.html'));
         } else {
@@ -53,7 +53,7 @@ Route::get('/api/auth', function (Request $request) {
 
     // Delete any previously created OAuth sessions that were not completed (don't have an access token)
     Session::where('shop', $shop)->where('access_token', null)->delete();
-    file_put_contents(dirname(__FILE__).'/hereisthe_shop', print_r($shop, true));
+    //file_put_contents(dirname(__FILE__).'/hereisthe_shop', print_r($shop, true));
 
     return AuthRedirection::redirect($request);
 });
@@ -70,7 +70,7 @@ Route::get('/api/auth/callback', function (Request $request) {
     $shop = Utils::sanitizeShopDomain($request->query('shop'));
 
     
-    file_put_contents(dirname(__FILE__).'/hereisthe_shop.txt', print_r($host, true));
+    //file_put_contents(dirname(__FILE__).'/hereisthe_shop.txt', print_r($host, true));
 
     $response = Registry::register('/api/webhooks', Topics::APP_UNINSTALLED, $shop, $session->getAccessToken());
     if ($response->isSuccess()) {
